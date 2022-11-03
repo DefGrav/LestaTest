@@ -1,3 +1,6 @@
+#pragma once
+
+constexpr int MIN_UPDATE_PERIOD_MS = 10;
 
 namespace test
 {

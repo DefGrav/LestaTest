@@ -97,10 +97,14 @@
     <ClCompile Include="test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="particle_system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="test.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="particle_system.h" />
   </ItemGroup>
 </Project>
