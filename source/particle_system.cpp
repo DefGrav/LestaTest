@@ -5,17 +5,13 @@
 #include "particle_system.h"
 
 void ParticlesPool::allocate(const size_t capacity) {
-	memory_buf = static_cast<int*>(malloc(capacity * (2 * sizeof(Vect2f) + 2  * sizeof(int) + sizeof(bool))));
-	positions = reinterpret_cast<Vect2f*>(memory_buf);
+	this->memory_buf = std:: make_unique<char[]>(capacity * (2 * sizeof(Vect2f) + 2 * sizeof(int) + sizeof(bool)));
+	positions = reinterpret_cast<Vect2f*>(memory_buf.get());
 	velocities = reinterpret_cast<Vect2f*>(positions + capacity);
 	colors = reinterpret_cast<int*>(velocities + capacity);
 	lifetimes = reinterpret_cast<int*>(colors + capacity);
 	is_alive = reinterpret_cast<bool*>(lifetimes + capacity);
 	this->capacity = capacity;
-}
-
-void ParticlesPool::deallocate() {
-	::free(memory_buf);
 }
 
 void ParticlesPool::update(const int delta) {
@@ -80,9 +76,3 @@ void ParticlesSystem::allocate(const size_t capacity) {
 	render_pool.allocate(capacity);
 	buffer.allocate(capacity);
 } 
-
-void ParticlesSystem::deallocate() {
-	physics_pool.deallocate();
-	render_pool.deallocate();
-	buffer.deallocate();
-}

@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+
 #include "test.h"
 
 constexpr int YELLOW = 0xFFFF0000;
@@ -19,11 +21,10 @@ struct Vect2f {
 
 struct ParticlesPool {
 	void allocate(const size_t capacity);
-	void deallocate();
 	void update(const int delta);
 	void move_particle(const size_t dst_ind, const size_t src_ind);
 	void refine();
-	int* memory_buf;
+	std::unique_ptr<char[]> memory_buf;
 	Vect2f* positions, * velocities;
 	int* colors, * lifetimes;
 	bool* is_alive;
@@ -33,7 +34,6 @@ struct ParticlesPool {
 
 struct ParticlesSystem {
 	void allocate(const size_t capacity);
-	void deallocate();
 
 	ParticlesPool physics_pool;
 	ParticlesPool render_pool;

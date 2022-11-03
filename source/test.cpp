@@ -58,9 +58,7 @@ void WorkerThread(void)
 			std::this_thread::sleep_for(std::chrono::milliseconds(MIN_UPDATE_PERIOD_MS - delta));
 
 		nvtxRangePop();
-
 	}
-	particle_system.deallocate();
 }
  
 
