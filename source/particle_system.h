@@ -15,12 +15,17 @@ constexpr float GRAVITY_CONSTANT = 0.5f * 9.807f;
 constexpr float EXPLOSION_PROBABILITY = 2.f / EFFECT_SIZE;
 //constexpr float EXPLOSION_PROBABILITY = 1.f;
 
+enum ErrT {
+	MemErr = -1,
+	OK
+};
+
 struct Vect2f {
 	float x, y;
 };
 
 struct ParticlesPool {
-	void allocate(const size_t capacity);
+	ErrT allocate(const size_t capacity);
 	void update(const int delta);
 	void move_particle(const size_t dst_ind, const size_t src_ind);
 	void refine();
@@ -33,7 +38,7 @@ struct ParticlesPool {
 };
 
 struct ParticlesSystem {
-	void allocate(const size_t capacity);
+	ErrT allocate(const size_t capacity);
 
 	ParticlesPool physics_pool;
 	ParticlesPool render_pool;

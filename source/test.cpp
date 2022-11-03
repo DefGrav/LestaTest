@@ -30,7 +30,6 @@ static std::mutex click_lock;
 
 void WorkerThread(void)
 {
-	particle_system.allocate(PARTICLE_LIMIT);
 	while (!worker_must_exit)
 	{
 		nvtxRangePush(__FUNCTION__);
@@ -64,6 +63,11 @@ void WorkerThread(void)
 
 void test::init(void)
 {
+	ErrT alloc_check = particle_system.allocate(PARTICLE_LIMIT);
+	if (alloc_check != OK) {
+		printf("Not enough memory\n");
+		return;
+	}
 	event_query.reserve(QUERY_CAPACITY);
 	std::thread workerThread(WorkerThread); 
 	workerThread.detach(); 
