@@ -19,7 +19,7 @@
 ParticlesSystem particle_system;
 
 std::vector<Vect2f> event_query;
-constexpr size_t QUERY_CAPACITY = 1000;
+constexpr size_t QUERY_CAPACITY = 10;
 
 static std::atomic_int globalTime;
 
@@ -30,7 +30,13 @@ static std::mutex click_lock;
 
 void WorkerThread(void)
 {
-	particle_system.allocate(PARTICLE_LIMIT);
+	try {
+		particle_system.allocate(PARTICLE_LIMIT);
+	}
+	catch (std::bad_alloc) {
+		printf("Not enough memory! Effect limit was violated!\n");
+		test::term();
+	}
 	while (!worker_must_exit)
 	{
 		nvtxRangePush(__FUNCTION__);
