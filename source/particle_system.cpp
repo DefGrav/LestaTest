@@ -4,17 +4,14 @@
 
 #include "particle_system.h"
 
-ErrT ParticlesPool::allocate(const size_t capacity) {
+void ParticlesPool::allocate(const size_t capacity) {
 	this->memory_buf = std:: make_unique<char[]>(capacity * (2 * sizeof(Vect2f) + 2 * sizeof(int) + sizeof(bool)));
-	if (memory_buf == nullptr)
-		return MemErr;
 	positions = reinterpret_cast<Vect2f*>(memory_buf.get());
 	velocities = reinterpret_cast<Vect2f*>(positions + capacity);
 	colors = reinterpret_cast<int*>(velocities + capacity);
 	lifetimes = reinterpret_cast<int*>(colors + capacity);
 	is_alive = reinterpret_cast<bool*>(lifetimes + capacity);
 	this->capacity = capacity;
-	return OK;
 }
 
 void ParticlesPool::update(const int delta) {
@@ -74,15 +71,8 @@ void explode(ParticlesPool& buf, const Vect2f& pos, const int color) {
 	buf.size += points_count;
 }
 
-ErrT ParticlesSystem::allocate(const size_t capacity) {
-	ErrT alloc_check = physics_pool.allocate(capacity);
-	if (alloc_check != OK)
-		return MemErr;
-	alloc_check = render_pool.allocate(capacity);
-	if (alloc_check != OK)
-		return MemErr;
-	alloc_check = buffer.allocate(capacity);
-	if (alloc_check != OK)
-		return MemErr;
-	return OK;
+void ParticlesSystem::allocate(const size_t capacity) {
+	physics_pool.allocate(capacity);
+	render_pool.allocate(capacity);
+	buffer.allocate(capacity);
 } 
